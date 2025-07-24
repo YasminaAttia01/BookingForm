@@ -8,6 +8,16 @@ services:
       - "5173:5173"
     volumes:
       - ./frontend:/app
-      - /app/node_modules   # Prevents overwriting node_modules with host
+      - /app/node_modules
+    stdin_open: true
+    tty: true
+
+  test:
+    build:
+      context: ./frontend
+    command: ["npm", "test"]
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
     stdin_open: true
     tty: true
