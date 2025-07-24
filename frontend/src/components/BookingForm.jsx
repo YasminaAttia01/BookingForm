@@ -15,8 +15,13 @@ function BookingForm() {
   useEffect(() => {
     const { fullName, email, date } = formData;
     const newErrors = {};
-
-    if (!fullName.trim()) newErrors.fullName = "Full name is required.";
+    if (!fullName.trim()) {
+      newErrors.fullName = "Full name is required.";
+    } else if (fullName.trim().length < 4) {
+      newErrors.fullName = "Full name must be at least 4 characters.";
+    } else if (!/^[A-Za-z\s]+$/.test(fullName.trim())) {
+      newErrors.fullName = "Full name must contain only letters and spaces.";
+    }
 
     if (!email.trim()) {
       newErrors.email = "Email is required.";
@@ -24,11 +29,10 @@ function BookingForm() {
       newErrors.email = "Invalid email format.";
     }
 
-    
     if (date) {
       const selectedDate = new Date(date);
       const today = new Date();
-      today.setHours(0, 0, 0, 0); 
+      today.setHours(0, 0, 0, 0);
       if (selectedDate < today) {
         newErrors.date = "Booking date cannot be in the past.";
       }
@@ -53,19 +57,25 @@ function BookingForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate aria-label="Booking Form">
+    <form onSubmit={handleSubmit} noValidate aria-label="Booking Form" role="form">
       <div className="form-group">
         <label htmlFor="fullName">Full Name*</label>
         <input
           type="text"
           id="fullName"
           name="fullName"
+          placeholder="John Doe"
           value={formData.fullName}
           onChange={handleChange}
           aria-required="true"
           aria-invalid={errors.fullName ? "true" : "false"}
+          aria-describedby={errors.fullName ? "fullName-error" : undefined}
         />
-        {errors.fullName && <span className="error">{errors.fullName}</span>}
+        {errors.fullName && (
+          <span id="fullName-error" role="alert" className="error">
+            {errors.fullName}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -74,12 +84,18 @@ function BookingForm() {
           type="email"
           id="email"
           name="email"
+          placeholder="john@example.com"
           value={formData.email}
           onChange={handleChange}
           aria-required="true"
           aria-invalid={errors.email ? "true" : "false"}
+          aria-describedby={errors.email ? "email-error" : undefined}
         />
-        {errors.email && <span className="error">{errors.email}</span>}
+        {errors.email && (
+          <span id="email-error" role="alert" className="error">
+            {errors.email}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -90,8 +106,13 @@ function BookingForm() {
           name="date"
           value={formData.date}
           onChange={handleChange}
+          aria-describedby={errors.date ? "date-error" : undefined}
         />
-        {errors.date && <span className="error">{errors.date}</span>}
+        {errors.date && (
+          <span id="date-error" role="alert" className="error">
+            {errors.date}
+          </span>
+        )}
       </div>
 
       <div className="form-group">
@@ -101,6 +122,7 @@ function BookingForm() {
           id="guests"
           name="guests"
           min="1"
+          placeholder="2"
           value={formData.guests}
           onChange={handleChange}
         />
@@ -108,7 +130,7 @@ function BookingForm() {
 
       <button type="submit" disabled={!isFormValid}>Submit Booking</button>
 
-      {isSubmitted && <p className="success">Booking submitted successfully!</p>}
+      {isSubmitted && <p className="success" role="status">Booking submitted successfully!</p>}
     </form>
   );
 }

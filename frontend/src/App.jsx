@@ -22,12 +22,18 @@ function App() {
       </div>
 
       <footer className="footer">
-        <div className="footer-text">
-          <strong>Also You Can Call Us & Reserve Table For Any Day</strong>
-          <p>Order Delivery Or Takeout +987 654 321</p>
-        </div>
-        <button className="footer-btn">Contact us</button>
-      </footer>
+  <div className="footer-text">
+    <strong>Also You Can Call Us & Reserve Table For Any Day</strong>
+    <p>
+      Order Delivery Or Takeout:{" "}
+      <a href="tel:+987654321">+216 53209679</a>
+    </p>
+  </div>
+  <a href="mailto:attiayasmina01@gmail.com">
+    <button className="footer-btn">Contact us via Email</button>
+  </a>
+</footer>
+
     </div>
   );
 }
