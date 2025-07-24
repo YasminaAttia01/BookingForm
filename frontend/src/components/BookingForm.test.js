@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import BookingForm from "./BookingForm";
 import '@testing-library/jest-dom';
